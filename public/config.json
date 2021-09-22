@@ -1,0 +1,15 @@
+{
+	"baseUrl": "/assets",
+	"appKey": "x8jvNoqbrpxEuSpOoHAugSWRMiwHYjIS1HzUk4gjauoqjQSdpmHXIxrXqC1S1T5luX3zTq",
+	"experience": "DEFAULT",
+	"backgroundImage": "/images/AR-BG.jpg",
+	"xr8Config":{
+		"name": "pmi-ar-application-local",
+		"assets":[
+			{
+				"id":"",
+				"url":""
+			}
+		]
+	}
+}
