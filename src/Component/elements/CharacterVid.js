@@ -98,7 +98,10 @@ function CharacterVid() {
   const { characterWelcomeVideoFinished } = useStore();
   const { setWelcomeVideoFinished } = useStore();
 
-  const videoRef = useRef();
+  const videoRef = useRef(null);
+  // useEffect(() => {
+  //   videoRef.current.play();
+  // }, [videoRef]);
 
   const [video] = useState(() => {
     const vid = document.createElement("video");
@@ -163,16 +166,17 @@ function CharacterVid() {
             args={[video]}
             encoding={THREE.sRGBEncoding}
           >
-            <shaderMaterial attach="material" args={[TorusShaderMaterial]} />
+            {/* <shaderMaterial attach="material" args={[TorusShaderMaterial]} /> */}
             {/* <shaderMaterial
               attach="material"
+              transparent
               args={[
                 {
-                  uniforms: GenTools.getUniforms(myvidtexture),
+                  uniforms: GenTools.getUniforms(videoRef.current),
                   vertexShader: GenTools.getVertexShader(),
                   fragmentShader: GenTools.getFragmentShaderChroma(),
-                  transparent: true
-                }
+                  transparent: true,
+                },
               ]}
             /> */}
           </videoTexture>
