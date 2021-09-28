@@ -124,7 +124,8 @@ const XR3F = ({ name, updateCtx }) => {
     XR8.XrController.updateCameraProjectionMatrix({
       origin: camera.position,
       facing: camera.quaternion,
-    }); 
+    });
+    console.dir(XR8);
   };
 
   const onUpdate = ({ processCpuResult }) => {
@@ -204,8 +205,8 @@ const XR3F = ({ name, updateCtx }) => {
       <group name="crawlingreticle" visible={!hasFirstPlacement} ref={ringRef}>
         <mesh scale={[0.4, 0.01, 0.4]} rotation={[0, 0, 0]}>
           <MyRotatingBox />
-        </mesh>
-        <mesh   rotation={[0, 0, 0]}>
+        </mesh>{" "}
+        <mesh   rotation={[Math.PI / 2, 0, 0]}>
           <Ring args={[2, 5, 40]} />
         </mesh>
       </group>
