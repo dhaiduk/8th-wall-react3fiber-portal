@@ -4,13 +4,101 @@ import useStore from "../../state";
 import { useAspect } from "@react-three/drei";
 import * as THREE from "three";
 import { GenTools } from "../../GenTools";
+import { VideoTexture } from "three";
+
+const url = "donnashort.mp4";
+function getUniforms(videoTexture) {
+  var uniforms = {
+    colorTexture: { value: videoTexture },
+    glow: { value: 0.0 },
+    glowColour: { value: { x: 0.0, y: 1.0, z: 0.0, w: 1.0 } },
+  };
+  return uniforms;
+}
+function getFragmentShader() {
+  let keycol = "vec3(0.0,1.0,0.0)"; // Green
+  let keycolind = "g"; // Green (set to "b" for blue
+  let sharpness = "3.0";
+
+  return (
+    `    
+      uniform sampler2D colorTexture;
+      varying vec2 vUv;
+      uniform float glow;
+      uniform vec4 glowColour;                     
+      
+      void main( void ) {
+              const float radius = 0.003;
+              vec4 cs1 = texture2D( colorTexture, vUv );
+              vec4 cs2 = texture2D( colorTexture, vUv + vec2(-radius, -radius));
+              vec4 cs4 = texture2D( colorTexture, vUv + vec2(radius, radius));
+              
+              vec4 c = (cs1 + cs2 + cs4) / 3.0;
+      
+              vec3 color = ` +
+    keycol +
+    `;
+              float a = (0.875 - dot(color, c.rgb) / (length(c.rgb) + 0.04)) * 4.0;
+              a = pow(a,` +
+    sharpness +
+    `);
+              vec4 c2 = vec4(mix(cs1.rgb, glowColour.rgb, glow), a);
+              float deltag = c2.` +
+    keycolind +
+    ` - ((c2.r + c2.g + c2.b)*0.333);
+      
+              if (deltag > 0.0)
+                  c2.` +
+    keycolind +
+    ` -= (deltag*1.0);
+
+              gl_FragColor = c2;
+
+
+      }`
+  );
+}
+function getVertexShader() {
+  return `    
+      varying vec2 vUv;
+      void main()
+      {
+      vUv = uv;
+      vUv.x = mix(0.0,1.0,uv.x);
+      vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+      gl_Position = projectionMatrix * mvPosition;
+      }`;
+}
+const Texture = ({ texture }) => {
+  return (
+    <mesh>
+      <planeBufferGeometry attach="geometry" args={[16, 9]} />
+      <shaderMaterial
+        attach="material"
+        transparent
+        args={[
+          {
+            vertexShader: getVertexShader(),
+            fragmentShader: getFragmentShader(),
+            uniforms: getUniforms(texture),
+          },
+        ]}
+        uniforms-colorTexture-value={texture}
+      />
+    </mesh>
+  );
+};
+const Video = ({ video }) => {
+  const front = new VideoTexture(video.current);
+  return <Texture texture={front} />;
+};
 
 function CharacterVid() {
   const size = useAspect(1800, 1000);
   const { characterWelcomeVideoFinished } = useStore();
   const { setWelcomeVideoFinished } = useStore();
 
-  const myvidtexture = useRef();
+  const videoRef = useRef();
 
   const [video] = useState(() => {
     const vid = document.createElement("video");
@@ -26,7 +114,7 @@ function CharacterVid() {
       vid.loop = true;
       vid.play();
     }
-    vid.onended = function() { 
+    vid.onended = function() {
       setWelcomeVideoFinished();
     };
     return vid;
@@ -70,7 +158,7 @@ function CharacterVid() {
         <planeBufferGeometry args={[0.1, 0.3]} />
         <meshBasicMaterial position={[1, 1, 1]} toneMapped={false}>
           <videoTexture
-            ref={myvidtexture}
+            ref={videoRef}
             attach="map"
             args={[video]}
             encoding={THREE.sRGBEncoding}
@@ -90,6 +178,8 @@ function CharacterVid() {
           </videoTexture>
         </meshBasicMaterial>
       </mesh>
+
+      {/* <Video video={videoRef} /> */}
     </group>
   );
 }
