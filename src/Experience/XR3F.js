@@ -12,7 +12,7 @@ function MyRotatingBox() {
   const myMesh = useRef();
   const TorusShaderMaterial = {
     uniforms: {
-      u_time: { type: "f", value: 0 }
+      u_time: { type: "f", value: 0 },
     },
     vertexShader: `
       precision mediump float;
@@ -31,7 +31,7 @@ function MyRotatingBox() {
         float cb = floor((uv.x + u_time) * 40.);
         gl_FragColor = vec4(mod(cb, 2.0),0.,0.,1.);
       }
-    `
+    `,
   };
   return (
     <mesh ref={myMesh}>
@@ -58,7 +58,7 @@ const XR3F = ({ name, updateCtx }) => {
   canvas.id = name;
 
   const [thepopNoise] = useSound(popNoise, {
-    volume: 1.18
+    volume: 1.18,
   });
 
   useFrame(({ gl, scene, camera, raycaster }) => {
@@ -98,7 +98,7 @@ const XR3F = ({ name, updateCtx }) => {
       onStart,
       onUpdate,
       onCanvasSizeChange,
-      xrScene: xrScene
+      xrScene: xrScene,
     });
   });
 
@@ -118,13 +118,13 @@ const XR3F = ({ name, updateCtx }) => {
     updateCtx({
       scene,
       camera,
-      renderer: gl
+      renderer: gl,
     });
 
     XR8.XrController.updateCameraProjectionMatrix({
       origin: camera.position,
-      facing: camera.quaternion
-    });
+      facing: camera.quaternion,
+    }); 
   };
 
   const onUpdate = ({ processCpuResult }) => {
@@ -204,7 +204,10 @@ const XR3F = ({ name, updateCtx }) => {
       <group name="crawlingreticle" visible={!hasFirstPlacement} ref={ringRef}>
         <mesh scale={[0.4, 0.01, 0.4]} rotation={[0, 0, 0]}>
           <MyRotatingBox />
-        </mesh> 
+        </mesh>
+        <mesh   rotation={[0, 0, 0]}>
+          <Ring args={[2, 5, 40]} />
+        </mesh>
       </group>
 
       <mesh

@@ -35,8 +35,6 @@ const MainScreenOverlays = (props) => {
 
       XR8.xrController().recenter();
     }
- 
-  
   });
 
   function doRecenterYes() { 

@@ -11,7 +11,7 @@ function CharacterVid() {
   const { setWelcomeVideoFinished } = useStore();
 
   const myvidtexture = useRef();
-  
+
   const [video] = useState(() => {
     const vid = document.createElement("video");
     vid.src = "/assets/videos/donnashort.mp4";
@@ -26,8 +26,7 @@ function CharacterVid() {
       vid.loop = true;
       vid.play();
     }
-    vid.onended = function() {
-      console.log("video ended ");
+    vid.onended = function() { 
       setWelcomeVideoFinished();
     };
     return vid;
@@ -41,10 +40,34 @@ function CharacterVid() {
     };
   }, []);
 
+  const TorusShaderMaterial = {
+    uniforms: {
+      u_time: { type: "f", value: 0 },
+    },
+    vertexShader: `
+      precision mediump float;
+      varying vec2 vUv;
+      void main() {
+          vec4 mvPosition = modelViewMatrix * vec4(position, 1.);
+          gl_Position = projectionMatrix * mvPosition;
+          vUv = uv;
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+      uniform float u_time;
+      void main() {
+        vec2 uv = vUv;
+        float cb = floor((uv.x + u_time) * 40.);
+        gl_FragColor = vec4(mod(cb, 2.0),0.,0.,1.);
+      }
+    `,
+  };
+
   return (
     <group scale={(1, 1, 1)} position={[0, -0.4, 0]}>
-      <mesh scale={size} position={[0, -0.12, -1.5]}>
-        <planeBufferGeometry args={[0.2, 0.5]} />
+      <mesh scale={size} position={[0, -0.12, -0.5]}>
+        <planeBufferGeometry args={[0.1, 0.3]} />
         <meshBasicMaterial position={[1, 1, 1]} toneMapped={false}>
           <videoTexture
             ref={myvidtexture}
@@ -52,7 +75,8 @@ function CharacterVid() {
             args={[video]}
             encoding={THREE.sRGBEncoding}
           >
-            <shaderMaterial
+            <shaderMaterial attach="material" args={[TorusShaderMaterial]} />
+            {/* <shaderMaterial
               attach="material"
               args={[
                 {
@@ -62,7 +86,7 @@ function CharacterVid() {
                   transparent: true
                 }
               ]}
-            />
+            /> */}
           </videoTexture>
         </meshBasicMaterial>
       </mesh>

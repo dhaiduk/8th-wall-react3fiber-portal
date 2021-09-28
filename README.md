@@ -1,6 +1,8 @@
 # RPR Portal Master
 
 This React-Three/Fiber project is the main portal simulation.
+
+![xrengine](./src/images/elevator)
  
 ###  Large Temporary Elevator Model 
 The current HD elevator model is large, it causes a delay when clicking, but this elevator is to be reduced, and we aren't using it for long. We can swap to a low quality one when needed.
@@ -11,6 +13,7 @@ Note:  The main blocker to high quality models in AR is not directly the model s
 This project is a combination of various 8th Wall and React projects, pulled together and updated to react-three/fiber (old = react-three-fiber).   
 
 ###  On-screen version
+![xrengine](./src/images/Screenshot.png)
 A rough scene to help debugging is shown by adding ?onscreen=y  for example  [https://127.0.0.1:8080/?onscreen=y](https://127.0.0.1:8080/?onscreen=y)  
 
 ###  Reading the source code
@@ -27,27 +30,30 @@ So, look inside sceneParts.js to find how it places the Elevator and sets the it
 
 State management:  Uses zustand (by creator of R3F).  Look here: ```import useStore from './state'```
 
+###  EASY MOBILE DEMO: No build required 
+
+```
+yarn run serve
+
+```
+
 ###  To Get up and running locally
 
 ```
 yarn install (preferred to npm install)
-npm run build 
+yarn run build 
 ```
-Then:  Serve the build folder over https with your preferred tool.
-
-... or you can use zapworks handy tool 'zapworks serve --lan' on the build folder.  To do that, run ```npm run serve``` then access https://192.168.1.64:8080 on your phone, or scan the handy QR code it produces.
+Then:  Serve the build folder over https with your preferred tool. Or just run ```yarn run serve``` and scan the QR code.
 
 ### Different Portals:  
-For tdebugging, two portals were used.  To change to the 'bad quality' portal, add portal=a to the url like: https://192.168.1.64:8080/?onscreen=y&portal=a
+For debugging, two portals were used.  To change to the 'bad quality' portal, add portal=a to the url like: https://192.168.1.64:8080/?onscreen=y&portal=a
 This will make it easy to swap models and better testing of measurements.  
-
 
 
 ### TODO:  
 - Publish to URL:  Is it possible to publish (the build folder here) to a whitelist destination URL ?  That would be very useful to know if Android/ iOs status outside of local server.
 - Video green screen removal
-- iPhone iOs server/https issue
-- Better World Tracking (bug fix required)
+- iPhone iOs server/https issue 
 
 
 
