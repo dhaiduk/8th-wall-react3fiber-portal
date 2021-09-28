@@ -2,7 +2,7 @@
 
 This React-Three/Fiber project is the main portal simulation.
 
-![xrengine](./src/images/elevator)
+![xrengine](./src/images/elevator.png)
  
 ###  Large Temporary Elevator Model 
 The current HD elevator model is large, it causes a delay when clicking, but this elevator is to be reduced, and we aren't using it for long. We can swap to a low quality one when needed.
@@ -13,9 +13,7 @@ Note:  The main blocker to high quality models in AR is not directly the model s
 This project is a combination of various 8th Wall and React projects, pulled together and updated to react-three/fiber (old = react-three-fiber).   
 
 ###  On-screen version
-![xrengine](./src/images/Screenshot.png)
-![xrengine](src/images/Screenshot.png)
-![xrengine](/src/images/Screenshot.png)
+![xrengine](./src/images/Screenshot.png) 
 A rough scene to help debugging is shown by adding ?onscreen=y  for example  [https://127.0.0.1:8080/?onscreen=y](https://127.0.0.1:8080/?onscreen=y)  
 
 ###  Reading the source code
